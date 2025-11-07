@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern responsive blog with clean design and great user experience">
+    <title>YinkaAde | Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>    
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img id="siteLogo" src="img/logo.png" alt="YinkaAde Logo" class="logo-img" style="width: 60px;">
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="#" id="create-post-btn">Create Post</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="mobile-menu" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to YinkaAde</h1>
+            <p>Discover insightful articles, tutorials, and stories on technology, design, and more.</p>
+            <a href="#featured" class="btn">Explore Featured</a>
+        </div>
+    </section>
+
+    <!-- <section class="admin-media" id="admin-media">
+    <div class="container">
+        <h2>Latest from Admin</h2>
+        <div id="media-display"></div>
+    </div>
+</section> -->
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Featured Post -->
+        <section id="featured">
+            <div class="featured-post">
+                <div class="featured-content">
+                    <h2>Getting Started with Modern Web Development</h2>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> June 15, 2023</span>
+                        <span><i class="far fa-user"></i> John Doe</span>
+                        <span><i class="far fa-clock"></i> 5 min read</span>
+                    </div>
+                    <p>Learn the fundamentals of modern web development including HTML5, CSS3, and JavaScript ES6+. This comprehensive guide will take you from beginner to proficient in building responsive, accessible websites.</p>
+                    <div class="post-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <a href="post.html" class="btn">Read More</a>
+                </div>
+                <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
+            </div>
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="search-filter">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search blog posts...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="technology">Technology</button>
+                <button class="category-btn" data-category="design">Design</button>
+                <button class="category-btn" data-category="lifestyle">Lifestyle</button>
+                <button class="category-btn" data-category="tutorials">Tutorials</button>
+            </div>
+        </section>
+
+        <!-- Recent Posts -->
+        <section>
+            <h2 class="section-title">Recent Posts</h2>
+            <div class="blog-grid" id="blog-grid">
+                <!-- Blog posts will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <div class="container">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Stay updated with our latest articles, tutorials, and news. No spam, just valuable content.</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>YinkaAde</h3>
+                    <p>A modern, responsive blog website built with HTML, CSS, and JavaScript.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Technology</a></li>
+                        <li><a href="#">Design</a></li>
+                        <li><a href="#">Lifestyle</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 YinkaAde. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Create Post Modal -->
+    <div class="modal" id="create-post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Post</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="create-post-form">
+                <div class="form-group">
+                    <label for="post-title">Title</label>
+                    <input type="text" id="post-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-author">Author</label>
+                    <input type="text" id="post-author" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-category">Category</label>
+                    <select id="post-category" required>
+                        <option value="">Select a category</option>
+                        <option value="technology">Technology</option>
+                        <option value="design">Design</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="tutorials">Tutorials</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="post-image">Image URL</label>
+                    <input type="url" id="post-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-content">Content</label>
+                    <textarea id="post-content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-tags">Tags (comma separated)</label>
+                    <input type="text" id="post-tags" required>
+                </div>
+                <button type="submit" class="btn">Publish Post</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample blog posts data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "The Future of Artificial Intelligence",
+                excerpt: "Exploring how AI is transforming industries and what to expect in the coming years.",
+                content: "Artificial Intelligence is no longer a concept of the future. It's here, and it's transforming industries at an unprecedented pace. From healthcare to finance, AI is making processes more efficient and opening up new possibilities that were once thought impossible. In this article, we explore the current state of AI and what we can expect in the coming years.",
+                author: "Jane Smith",
+                date: "June 10, 2023",
+                category: "technology",
+                image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                tags: ["AI", "Technology", "Future"]
+            },
+            {
+                id: 2,
+                title: "Minimalist Design Principles",
+                excerpt: "Learn how to create clean, effective designs by embracing minimalism.",
+                content: "Minimalism in design isn't about removing elements for the sake of it. It's about focusing on what's essential and removing distractions. This approach leads to cleaner, more effective designs that communicate more clearly and provide better user experiences. In this article, we'll explore the key principles of minimalist design and how to apply them to your projects.",
+                author: "Alex Johnson",
+                date: "June 5, 2023",
+                category: "design",
+                image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+                tags: ["Design", "Minimalism", "UI/UX"]
+            },
+            {
+                id: 3,
+                title: "Healthy Habits for Remote Workers",
+                excerpt: "Maintaining productivity and wellbeing while working from home.",
+                content: "The shift to remote work has brought many benefits, but it also presents unique challenges for maintaining healthy habits. Without the structure of an office environment, it's easy to fall into patterns that can negatively impact both productivity and wellbeing. In this article, we share practical tips for creating a healthy remote work routine that supports both your professional and personal life.",
+                author: "Sarah Williams",
+                date: "May 28, 2023",
+                category: "lifestyle",
+                image: "https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                tags: ["Remote Work", "Productivity", "Wellbeing"]
+            },
+            {
+                id: 4,
+                title: "Mastering CSS Grid Layout",
+                excerpt: "A comprehensive guide to creating modern layouts with CSS Grid.",
+                content: "CSS Grid has revolutionized how we create layouts for the web. With its two-dimensional system, we can create complex, responsive layouts with less code and more flexibility than ever before. In this comprehensive tutorial, we'll explore the fundamentals of CSS Grid and walk through practical examples that you can apply to your own projects.",
+                author: "Michael Brown",
+                date: "May 20, 2023",
+                category: "tutorials",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+                tags: ["CSS", "Web Development", "Layout"]
+            },
+            {
+                id: 5,
+                title: "The Rise of Sustainable Technology",
+                excerpt: "How tech companies are addressing environmental challenges.",
+                content: "As climate change becomes an increasingly urgent issue, technology companies are stepping up to address environmental challenges. From renewable energy solutions to sustainable manufacturing practices, the tech industry is playing a crucial role in creating a more sustainable future. In this article, we explore the innovations and initiatives that are making a difference.",
+                author: "David Chen",
+                date: "May 15, 2023",
+                category: "technology",
+                image: "https://images.unsplash.com/photo-1569163139394-de44cb2c8cb7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1331&q=80",
+                tags: ["Sustainability", "Technology", "Environment"]
+            }
+        ];
+
+        // DOM Elements
+        const blogGrid = document.getElementById('blog-grid');
+        const searchInput = document.getElementById('search-input');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const createPostBtn = document.getElementById('create-post-btn');
+        const createPostModal = document.getElementById('create-post-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const createPostForm = document.getElementById('create-post-form');
+        const newsletterForm = document.getElementById('newsletter-form');
+
+        // Initialize the blog
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load blog posts
+            displayBlogPosts(blogPosts);
+            
+            // Load posts from localStorage if available
+            const savedPosts = JSON.parse(localStorage.getItem('blogPosts'));
+            if (savedPosts && savedPosts.length > 0) {
+                displayBlogPosts(savedPosts);
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Display blog posts in the grid
+        function displayBlogPosts(posts) {
+            blogGrid.innerHTML = '';
+            
+            posts.forEach((post, index) => {
+                const postCard = document.createElement('article');
+                postCard.className = 'post-card';
+                postCard.style.animationDelay = `${index * 0.1}s`;
+                
+                postCard.innerHTML = `
+                    <div class="post-card-image" style="background-image: url('${post.image}')"></div>
+                    <div class="post-card-content">
+                        <h3>${post.title}</h3>
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author}</span>
+                        </div>
+                        <p>${post.excerpt}</p>
+                        <a href="post.html?id=${post.id}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                
+                blogGrid.appendChild(postCard);
+            });
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('input', filterPosts);
+            
+            // Category filtering
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    filterPosts();
+                });
+            });
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Mobile menu
+            mobileMenu.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Create post modal
+            createPostBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                createPostModal.style.display = 'flex';
+            });
+            
+            closeModal.addEventListener('click', function() {
+                createPostModal.style.display = 'none';
+            });
+            
+            // Create post form submission
+            createPostForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                createNewPost();
+            });
+            
+            // Newsletter form submission
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input').value;
+                alert(`Thank you for subscribing with ${email}! You'll receive our latest updates soon.`);
+                this.reset();
+            });
+        }
+
+        // Filter posts based on search and category
+        function filterPosts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            
+            let filteredPosts = blogPosts;
+            
+            // Filter by search term
+            if (searchTerm) {
+                filteredPosts = filteredPosts.filter(post => 
+                    post.title.toLowerCase().includes(searchTerm) || 
+                    post.excerpt.toLowerCase().includes(searchTerm) ||
+                    post.content.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Filter by category
+            if (activeCategory !== 'all') {
+                filteredPosts = filteredPosts.filter(post => post.category === activeCategory);
+            }
+            
+            displayBlogPosts(filteredPosts);
+        }
+
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Create a new blog post
+        function createNewPost() {
+            const title = document.getElementById('post-title').value;
+            const author = document.getElementById('post-author').value;
+            const category = document.getElementById('post-category').value;
+            const image = document.getElementById('post-image').value;
+            const content = document.getElementById('post-content').value;
+            const tags = document.getElementById('post-tags').value.split(',').map(tag => tag.trim());
+            
+            const newPost = {
+                id: Date.now(), // Simple ID generation
+                title,
+                excerpt: content.substring(0, 150) + '...',
+                content,
+                author,
+                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                category,
+                image,
+                tags
+            };
+            
+            // Add to posts array
+            blogPosts.unshift(newPost);
+            
+            // Save to localStorage
+            localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+            
+            // Update display
+            displayBlogPosts(blogPosts);
+            
+            // Close modal and reset form
+            createPostModal.style.display = 'none';
+            createPostForm.reset();
+            
+            alert('Post created successfully!');
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+        // Load Admin Uploaded Media
+function loadAdminMedia() {
+    const mediaDisplay = document.getElementById('media-display');
+    const mediaData = JSON.parse(localStorage.getItem('adminMedia'));
+
+    if (mediaData) {
+        if (mediaData.type === 'image') {
+            mediaDisplay.innerHTML = `
+                <div class="media-card">
+                    <img src="${mediaData.url}" alt="Admin Upload" class="media-img">
+                    ${mediaData.caption ? `<p class="media-caption">${mediaData.caption}</p>` : ''}
+                </div>
+            `;
+        } else if (mediaData.type === 'video') {
+            mediaDisplay.innerHTML = `
+                <div class="media-card">
+                    <video controls class="media-video">
+                        <source src="${mediaData.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    ${mediaData.caption ? `<p class="media-caption">${mediaData.caption}</p>` : ''}
+                </div>
+            `;
+        }
+    } else {
+        mediaDisplay.innerHTML = `<p class="no-media">No media uploaded yet.</p>`;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAdminMedia);
+
+
+
+const logo = document.getElementById('siteLogo');
+const body = document.body;
+const toggle = document.getElementById('themeToggle'); // your dark/light button
+
+// Check saved theme on page load
+if (localStorage.getItem('theme') === 'dark') {
+  body.classList.add('dark-mode');
+  logo.src = 'img/logo-2.png';
+} else {
+  body.classList.remove('dark-mode');
+  logo.src = 'img/logo.png';
+}
+
+// Handle dark/light toggle instantly
+toggle.addEventListener('click', () => {
+  // Toggle dark mode class
+  body.classList.toggle('dark-mode');
+
+  // Instantly update the logo based on the mode
+  if (body.classList.contains('dark-mode')) {
+    logo.src = 'img/logo-2.png';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    logo.src = 'img/logo.png';
+    localStorage.setItem('theme', 'light');
+  }
+});
+
+
+    </script>
+</body>
+</html>

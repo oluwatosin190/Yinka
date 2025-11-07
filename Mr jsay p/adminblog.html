@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Blog Post</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .blog-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .blog-form h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .blog-form input,
+    .blog-form textarea,
+    .blog-form select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .blog-form input[type="file"] {
+      border: none;
+    }
+
+    .blog-form button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .blog-form button:hover {
+      background: #0056b3;
+    }
+
+    .preview {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <form class="blog-form" id="blogForm">
+    <h2>Create New Blog Post</h2>
+
+    <input type="text" id="title" placeholder="Enter Blog Title" required />
+    <textarea id="content" rows="6" placeholder="Write your blog content..." required></textarea>
+
+    <!-- Category Dropdown -->
+    <select id="category" required>
+      <option value="">Select Category</option>
+      <option value="technology">Technology</option>
+      <option value="design">Design</option>
+      <option value="lifestyle">Lifestyle</option>
+      <option value="tutorials">Tutorials</option>
+    </select>
+
+    <input type="file" id="imageUpload" accept="image/*" required />
+    <img id="previewImage" class="preview" />
+
+    <button type="submit">Publish Blog</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('blogForm');
+    const imageUpload = document.getElementById('imageUpload');
+    const previewImage = document.getElementById('previewImage');
+
+    // Preview uploaded image
+    imageUpload.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Save blog post locally (no backend)
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+      const category = document.getElementById('category').value;
+      const image = previewImage.src;
+
+      if (!title || !content || !category || !image) {
+        alert("Please fill all fields and upload an image!");
+        return;
+      }
+
+      const newPost = {
+        title,
+        content,
+        category,
+        image,
+        date: new Date().toLocaleString()
+      };
+
+      let posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+      posts.unshift(newPost);
+      localStorage.setItem('blogPosts', JSON.stringify(posts));
+
+      alert("Blog post published successfully!");
+      form.reset();
+      previewImage.style.display = 'none';
+      window.location.href = "admin.html"; // Go back to dashboard
+    });
+  </script>
+
+</body>
+</html>
