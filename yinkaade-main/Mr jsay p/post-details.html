@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog post details">
+    <title>YinkaAde | Post Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="post-detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img id="siteLogo" src="img/logo.png" alt="YinkaAde Logo" class="logo-img" style="width: 60px;">
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="mobile-menu" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="blog-post-detail">
+            <div id="post-content">
+                <p>Loading post...</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 YinkaAde. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Map Supabase post to our format
+        const mapSupabaseToBlogPosts = (rawPost) => {
+            const dateFormatted = window.supabase && window.supabase.formatDate
+                ? window.supabase.formatDate(rawPost.created_at)
+                : (rawPost.created_at || '');
+
+            return {
+                id: rawPost.id,
+                title: rawPost.title,
+                category: rawPost.category || "technology",
+                content: rawPost.content || '',
+                author: rawPost.author || "Yinka Ade",
+                date: dateFormatted,
+                image: rawPost.cover_image || '',
+                tags: rawPost.tags || []
+            };
+        };
+
+        async function loadPost() {
+            const postId = getUrlParam('id');
+            const postContent = document.getElementById('post-content');
+
+            if (!postId) {
+                postContent.innerHTML = '<p>No post ID specified.</p>';
+                return;
+            }
+
+            try {
+
+                const rawPost = await window.supabase.fetchPost(postId);
+                if (!rawPost) {
+                    postContent.innerHTML = '<p>Post not found.</p>';
+                    return;
+                }
+
+                const post = mapSupabaseToBlogPosts(rawPost);
+                document.title = `YinkaAde | ${post.title}`;
+
+                postContent.innerHTML = `
+                    <div class="blog-post-header">
+                        <h1>${post.title}</h1>
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author}</span>
+                            <span><i class="far fa-folder"></i> ${post.category}</span>
+                        </div>
+                    </div>
+                    <div class="blog-post-image" style="background-image: url('${post.image}')"></div>
+                    <div class="blog-post-content">
+                        ${post.content}
+                    </div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="post-navigation">
+                        <a href="blog.html" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i> Back to Blog
+                        </a>
+                    </div>
+                `;
+
+            } catch (err) {
+                console.error('Error loading post:', err);
+                postContent.innerHTML = '<p>Error loading post.</p>';
+            }
+        }
+
+        // Load post when page loads
+        document.addEventListener('DOMContentLoaded', loadPost);
+    </script>
+</body>
+
+</html>

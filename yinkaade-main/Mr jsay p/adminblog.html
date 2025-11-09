@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Blog Post</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .blog-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .blog-form h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .blog-form input,
+    .blog-form textarea,
+    .blog-form select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .blog-form input[type="file"] {
+      border: none;
+    }
+
+    .blog-form button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .blog-form button:hover {
+      background: #0056b3;
+    }
+
+    .preview {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form class="blog-form" id="blogForm">
+    <h2>Create New Blog Post</h2>
+
+    <input type="text" id="title" placeholder="Enter Blog Title" required />
+    <textarea id="content" rows="6" placeholder="Write your blog content..." required></textarea>
+
+    <!-- Category Dropdown -->
+    <select id="category" required>
+      <option value="">Select Category</option>
+      <option value="technology">Technology</option>
+      <option value="design">Design</option>
+      <option value="lifestyle">Lifestyle</option>
+      <option value="tutorials">Tutorials</option>
+    </select>
+
+    <input type="file" id="imageUpload" accept="image/*" required />
+    <img id="previewImage" class="preview" />
+
+    <button type="submit">Publish Blog</button>
+  </form>
+
+  <script>
+    // Access Supabase functions
+    // 💥 FIX: Alias ALL imported functions to prevent the "already declared" conflicts
+    const { 
+        createPost: supabaseCreatePost, 
+        updatePost: supabaseUpdatePost, 
+        fetchPost: supabaseFetchPost, 
+        uploadFileAndGetUrl: supabaseUploadFile, 
+        getUserId: supabaseGetUserId
+    } = window.supabase;
+    
+    const form = document.getElementById('blogForm');
+    const imageUpload = document.getElementById('imageUpload');
+    const previewImage = document.getElementById('previewImage');
+    const titleElement = document.getElementById('title');
+    const contentElement = document.getElementById('content');
+    const categoryElement = document.getElementById('category');
+    const formTitle = form.querySelector('h2');
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    let currentPostId = null; 
+    let currentImageUrl = null; 
+
+    // --- SETUP AND EDIT MODE CHECK ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        currentPostId = urlParams.get('id');
+
+        if (currentPostId) {
+            formTitle.textContent = "Edit Existing Post";
+            submitButton.textContent = "Update Blog Post";
+            
+            // Fetch post data using alias
+            const post = await supabaseFetchPost(currentPostId);
+            if (post) {
+                titleElement.value = post.title;
+                contentElement.value = post.content;
+                categoryElement.value = post.category || ''; 
+                
+                if (post.cover_image) {
+                    previewImage.src = post.cover_image;
+                    previewImage.style.display = 'block';
+                    currentImageUrl = post.cover_image; 
+                }
+                
+                // Make image upload optional for editing
+                imageUpload.required = false; 
+            } else {
+                alert("Post not found.");
+                window.location.href = "admin.html";
+            }
+        }
+        
+        // Attach event listeners
+        imageUpload.addEventListener('change', handleImagePreview);
+        form.addEventListener('submit', handleSubmit);
+    });
+
+    // Preview uploaded image
+    function handleImagePreview() {
+      const file = imageUpload.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // --- SUBMISSION LOGIC (Create or Update) ---
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const title = titleElement.value;
+      const content = contentElement.value;
+      const category = categoryElement.value;
+      const imageFile = imageUpload.files[0];
+
+      // Validation check
+      if (!title || !content || !category || (!imageFile && !currentPostId && !currentImageUrl)) {
+        alert("Please fill all required fields, including uploading an image for a new post.");
+        return;
+      }
+      
+      submitButton.textContent = currentPostId ? 'Updating...' : 'Publishing...';
+      submitButton.disabled = true;
+      
+      try {
+          // 1. Get the current user ID (using alias)
+          const author_id = await supabaseGetUserId();
+          if (!author_id) {
+              alert('Authentication error: Please log in again.');
+              window.location.href = "admin.html";
+              return;
+          }
+
+          let finalImageUrl = currentImageUrl;
+          
+          // 2. Handle Image Upload (Only if a new file is selected)
+          if (imageFile) {
+              submitButton.textContent = 'Uploading Image...';
+              // Upload file using alias
+              finalImageUrl = await supabaseUploadFile(imageFile);
+              if (!finalImageUrl) {
+                  throw new Error("Image upload failed.");
+              }
+          } else if (!finalImageUrl) {
+               throw new Error("Cover image is required.");
+          }
+
+          // 3. Create the Post Data object 
+          const postData = {
+              title: title,
+              content: content,
+              category: category,
+              cover_image: finalImageUrl,
+              author_id: author_id,
+          };
+          
+          let success = false;
+          
+          // 4. Insert or Update Post (using aliases)
+          if (currentPostId) {
+              submitButton.textContent = 'Saving Changes...';
+              // Always include all fields in update to ensure consistency
+              const updateData = {
+                  title: title,
+                  content: content,
+                  category: category,
+                  cover_image: finalImageUrl  // Always include the image URL
+              };
+              
+              console.log('Updating post with ID:', currentPostId);
+              console.log('Update data:', updateData);
+              success = await supabaseUpdatePost(currentPostId, updateData);
+              console.log('Update result:', success);
+              
+              // If successful, update the current image URL
+              if (success) {
+                  currentImageUrl = finalImageUrl;
+              }
+          } else {
+              submitButton.textContent = 'Inserting Post...';
+              const newPost = await supabaseCreatePost(postData);
+              success = !!newPost;
+          }
+
+          if (success) {
+              alert(currentPostId ? "Post updated successfully!" : "Blog post published successfully!");
+              form.reset();
+              previewImage.style.display = 'none';
+              window.location.href = "admin.html"; 
+          } else {
+              throw new Error("Failed to " + (currentPostId ? "update" : "create") + " post. Please verify you are logged in and have permission to edit this post.");
+          }
+
+      } catch (error) {
+          console.error("Publishing/Editing error:", error);
+          alert(`Error: ${error.message}\n\nPossible issues:\n1. You may not be logged in\n2. You may not have permission to edit this post\n3. The post may have been deleted\n\nPlease try logging out and back in.`);
+      } finally {
+          submitButton.textContent = currentPostId ? 'Update Blog Post' : 'Publish Blog';
+          submitButton.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+
+</html>

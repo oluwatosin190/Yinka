@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern responsive blog with clean design and great user experience">
+    <title>YinkaAde | Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img id="siteLogo" src="img/logo.png" alt="YinkaAde Logo" class="logo-img" style="width: 60px;">
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="#" id="create-post-btn">Create Post</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="mobile-menu" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to YinkaAde</h1>
+            <p>Discover insightful articles, tutorials, and stories on technology, design, and more.</p>
+            <a href="#featured" class="btn">Explore Featured</a>
+        </div>
+    </section>
+
+    <!-- <section class="admin-media" id="admin-media">
+    <div class="container">
+        <h2>Latest from Admin</h2>
+        <div id="media-display"></div>
+    </div>
+</section> -->
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Featured Post -->
+        <section id="featured">
+            <div class="featured-post">
+                <div class="featured-content">
+                    <h2>Getting Started with Modern Web Development</h2>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> June 15, 2025</span>
+                        <span><i class="far fa-user"></i> John Doe</span>
+                        <span><i class="far fa-clock"></i> 5 min read</span>
+                    </div>
+                    <p>Learn the fundamentals of modern web development including HTML5, CSS3, and JavaScript ES6+. This
+                        comprehensive guide will take you from beginner to proficient in building responsive, accessible
+                        websites.</p>
+                    <div class="post-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <a href="post-details.html?id=1" class="btn">Read More</a>
+                </div>
+                <div class="featured-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');">
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="search-filter">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search blog posts...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="technology">Technology</button>
+                <button class="category-btn" data-category="design">Design</button>
+                <button class="category-btn" data-category="lifestyle">Lifestyle</button>
+                <button class="category-btn" data-category="tutorials">Tutorials</button>
+            </div>
+        </section>
+
+        <!-- Recent Posts -->
+        <section>
+            <h2 class="section-title">Recent Posts</h2>
+            <div class="blog-grid" id="blog-grid">
+                <!-- Blog posts will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <div class="container">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Stay updated with our latest articles, tutorials, and news. No spam, just valuable content.</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>YinkaAde</h3>
+                    <p>A modern, responsive blog website built with HTML, CSS, and JavaScript.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Technology</a></li>
+                        <li><a href="#">Design</a></li>
+                        <li><a href="#">Lifestyle</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 YinkaAde. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Create Post Modal -->
+    <div class="modal" id="create-post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Post</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="create-post-form">
+                <div class="form-group">
+                    <label for="post-title">Title</label>
+                    <input type="text" id="post-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-author">Author</label>
+                    <input type="text" id="post-author" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-category">Category</label>
+                    <select id="post-category" required>
+                        <option value="">Select a category</option>
+                        <option value="technology">Technology</option>
+                        <option value="design">Design</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="tutorials">Tutorials</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="post-image">Image URL</label>
+                    <input type="url" id="post-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="post-content">Content</label>
+                    <textarea id="post-content" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-tags">Tags (comma separated)</label>
+                    <input type="text" id="post-tags" required>
+                </div>
+                <button type="submit" class="btn">Publish Post</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Use a global array to hold the mapped posts, replacing the sample data
+        let blogPosts = [];
+
+        // --- SUPABASE DATA MAPPING FUNCTIONS ---
+
+        /**
+         * Converts the raw Supabase post object into the required custom blogPost format.
+         * Note: This mapper ensures compatibility with the existing display functions (displayBlogPosts).
+         * @param {object} rawPost - The post object returned directly from Supabase.
+         * @returns {object} The standardized blogPost object.
+         */
+        const mapSupabaseToBlogPosts = (rawPost) => {
+            // Note: rawPost comes from the 'posts' table and contains 'content', 'created_at', 'cover_image' (as image)
+            
+            // Assuming post.author and post.tags are not in the current 'posts' table structure, 
+            // we use defaults/derived values to satisfy the required format.
+            const dateFormatted = window.supabase.formatDate(rawPost.created_at);
+            
+            return {
+                id: rawPost.id,
+                title: rawPost.title,
+                // The existing form allows selecting category, but the DB might not have it.
+                // Assuming we default category or look it up if needed.
+                category: rawPost.category || "technology", // Use DB category if exists, otherwise default
+                excerpt: rawPost.content.substring(0, 150) + (rawPost.content.length > 150 ? '...' : ''),
+                content: rawPost.content,
+                
+                // Fields to satisfy the existing displayBlogPosts format:
+                author: "Yinka Ade", // Hardcode the owner's name
+                date: dateFormatted,
+                image: rawPost.cover_image,
+                tags: rawPost.tags || ["General", "UW-Madison"] // Use DB tags if available
+            };
+        };
+
+        // --- DOM Elements ---
+        const blogGrid = document.getElementById('blog-grid');
+        const searchInput = document.getElementById('search-input');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const createPostBtn = document.getElementById('create-post-btn');
+        const createPostModal = document.getElementById('create-post-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const createPostForm = document.getElementById('create-post-form');
+        const newsletterForm = document.getElementById('newsletter-form');
+        const logo = document.getElementById('siteLogo');
+        const body = document.body;
+        
+        // --- Core Logic ---
+
+        // Display blog posts in the grid
+        function displayBlogPosts(posts) {
+            blogGrid.innerHTML = '';
+
+            // Handle Featured Post (First Post)
+            if (posts.length > 0) {
+                const featuredPost = posts[0];
+                const featuredSection = document.getElementById('featured').querySelector('.featured-post');
+                
+                // Update Featured Post Content
+                featuredSection.querySelector('h2').textContent = featuredPost.title;
+                featuredSection.querySelector('.post-meta').innerHTML = `
+                    <span><i class="far fa-calendar"></i> ${featuredPost.date}</span>
+                    <span><i class="far fa-user"></i> ${featuredPost.author}</span>
+                    <span><i class="far fa-clock"></i> 5 min read</span>
+                `;
+                featuredSection.querySelector('p').textContent = featuredPost.excerpt;
+                featuredSection.querySelector('.post-tags').innerHTML = featuredPost.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+                featuredSection.querySelector('a.btn').href = `post-details.html?id=${featuredPost.id}`;
+                featuredSection.querySelector('.featured-image').style.backgroundImage = `url('${featuredPost.image}')`;
+            }
+            
+            // Display the rest of the posts in the grid
+            // We use a simple loop here, skipping the first post since it's the featured one.
+                posts.slice(1).forEach((post, index) => {
+                const postCard = document.createElement('article');
+                postCard.className = 'post-card';
+
+                // Update card to link to post.html instead of expanding inline
+                postCard.innerHTML = `
+                    <div class="post-card-image" style="background-image: url('${post.image}')"></div>
+                    <div class="post-card-content">
+                        <h3>${post.title}</h3>
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author}</span>
+                        </div>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="post-details.html?id=${post.id}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;                blogGrid.appendChild(postCard);
+            });
+        }
+
+        // Filter posts based on search and category
+        function filterPosts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+
+            let filteredPosts = blogPosts;
+
+            // Filter by search term
+            if (searchTerm) {
+                filteredPosts = filteredPosts.filter(post =>
+                    post.title.toLowerCase().includes(searchTerm) ||
+                    post.excerpt.toLowerCase().includes(searchTerm) ||
+                    post.content.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Filter by category
+            if (activeCategory !== 'all') {
+                filteredPosts = filteredPosts.filter(post => post.category === activeCategory);
+            }
+
+            displayBlogPosts(filteredPosts);
+        }
+
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+                logo.src = 'img/logo-2.png';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+                logo.src = 'img/logo.png';
+            }
+        }
+        
+        // 💥 NEW/MODIFIED: Supabase Integration for Loading Posts
+        async function loadAndDisplayPosts() {
+            try {
+                // Fetch raw posts from Supabase
+                const rawPosts = await window.supabase.fetchPosts(); 
+
+                // Map raw data to the required blogPosts format
+                blogPosts = rawPosts.map(mapSupabaseToBlogPosts); 
+
+                // Display filtered/all posts
+                displayBlogPosts(blogPosts);
+
+                // Start real-time subscription (Optional but recommended)
+                if (window.supabase.subscribeToPosts) {
+                    window.supabase.subscribeToPosts(async (payload) => {
+                        console.log('Real-time post change detected:', payload);
+                        const updatedRawPosts = await window.supabase.fetchPosts();
+                        blogPosts = updatedRawPosts.map(mapSupabaseToBlogPosts);
+                        displayBlogPosts(blogPosts);
+                    });
+                }
+                
+            } catch (error) {
+                console.error("Error loading posts from Supabase:", error);
+                blogGrid.innerHTML = '<p>Failed to load posts. Please check Supabase connection and RLS policies.</p>';
+            }
+        }
+
+        // 💥 MODIFIED: Create a new blog post
+        // NOTE: This now ONLY handles the frontend input. The Supabase createPost logic 
+        // will be in the dedicated dashboard/admin page, not the public homepage form.
+        // We revert this to a simple alert since image uploading cannot be done via URL input easily.
+        function createNewPost() {
+            alert('Post creation is now handled through the Admin Dashboard for secure image uploading and authentication.');
+            createPostModal.style.display = 'none';
+            createPostForm.reset();
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('input', filterPosts);
+
+            // Category filtering
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    filterPosts();
+                });
+            });
+
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Mobile menu
+            mobileMenu.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+            });
+
+            // Create post modal (Now just redirects or alerts)
+            createPostBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Please log in to the Admin Dashboard to create new posts.');
+                // Optional: window.location.href = 'admin.html';
+            });
+
+            // Read More links now navigate to post.html
+            blogGrid.addEventListener('click', function (e) {
+                const link = e.target.closest('.read-more');
+                if (!link) return;
+                // Let the link handle navigation naturally
+            });
+
+            closeModal.addEventListener('click', function () {
+                createPostModal.style.display = 'none';
+            });
+
+            // Create post form submission (Prevent default creation)
+            createPostForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                createNewPost();
+            });
+
+            // Newsletter form submission
+            newsletterForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const email = this.querySelector('input').value;
+                
+                // 💥 NEW: Supabase Newsletter Subscription (Assuming you add an 'subscribers' table)
+                // if (window.supabase.subscribeNewsletter) {
+                //     const success = await window.supabase.subscribeNewsletter(email);
+                //     if (success) {
+                //         alert(`Thank you for subscribing with ${email}!`);
+                //     } else {
+                //         alert('Subscription failed. Please try again.');
+                //     }
+                // } else {
+                    alert(`Thank you for subscribing with ${email}! You'll receive our latest updates soon.`);
+                // }
+                this.reset();
+            });
+        }
+        
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', function () {
+            // 💥 Replaced local storage check with Supabase load
+            loadAndDisplayPosts(); 
+
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Check for saved theme preference and set initial state
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            logo.src = 'img/logo-2.png';
+        } else {
+            logo.src = 'img/logo.png';
+        }
+    </script>
+</body>
+
+</html>

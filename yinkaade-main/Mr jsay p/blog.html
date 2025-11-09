@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="All blog posts">
+    <title>YinkaAde | Blog</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img id="siteLogo" src="img/logo.png" alt="YinkaAde Logo" class="logo-img" style="width: 60px;">
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="#" id="create-post-btn">Create Post</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="mobile-menu" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>All Blog Posts</h1>
+            <p>Read the full posts below.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Search and Filter -->
+        <section class="search-filter">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search blog posts...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="technology">Technology</button>
+                <button class="category-btn" data-category="design">Design</button>
+                <button class="category-btn" data-category="lifestyle">Lifestyle</button>
+                <button class="category-btn" data-category="tutorials">Tutorials</button>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Blog</h2>
+            <div id="blog-list" class="blog-grid"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>YinkaAde</h3>
+                    <p>A modern, responsive blog website built with HTML, CSS, and JavaScript.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Technology</a></li>
+                        <li><a href="#">Design</a></li>
+                        <li><a href="#">Lifestyle</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 YinkaAde. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mapper copied from index.js to keep formats consistent
+        const mapSupabaseToBlogPosts = (rawPost) => {
+            const dateFormatted = window.supabase && window.supabase.formatDate ? window.supabase.formatDate(rawPost.created_at) : (rawPost.created_at || '');
+            return {
+                id: rawPost.id,
+                title: rawPost.title,
+                category: rawPost.category || "technology",
+                excerpt: rawPost.content ? rawPost.content.substring(0, 150) + (rawPost.content.length > 150 ? '...' : '') : '',
+                content: rawPost.content || '',
+                author: rawPost.author || "Yinka Ade",
+                date: dateFormatted,
+                image: rawPost.cover_image || '',
+                tags: rawPost.tags || []
+            };
+        };
+
+        // Filter posts based on search and category
+        function filterPosts(posts, searchTerm, activeCategory) {
+            return posts.filter(post => {
+                const matchesSearch = !searchTerm || 
+                    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesCategory = activeCategory === 'all' || post.category === activeCategory;
+                return matchesSearch && matchesCategory;
+            });
+        }
+
+        async function loadAndShowAllPosts() {
+            const blogList = document.getElementById('blog-list');
+            blogList.innerHTML = '<p>Loading posts...</p>';
+            try {
+                const rawPosts = await window.supabase.fetchPosts();
+                const posts = rawPosts.map(mapSupabaseToBlogPosts);
+                if (!posts || posts.length === 0) {
+                    blogList.innerHTML = '<p>No posts available.</p>';
+                    return;
+                }
+
+                // Store posts globally for filtering
+                window.allPosts = posts;
+                
+                // Initial display
+                displayPosts(posts);
+
+                // Set up search and filter
+                setupFilters();
+
+            } catch (err) {
+                console.error(err);
+                blogList.innerHTML = '<p>Error loading posts.</p>';
+            }
+        }
+
+        function displayPosts(posts) {
+            const blogList = document.getElementById('blog-list');
+            blogList.innerHTML = '';
+            
+            posts.forEach(post => {
+                const article = document.createElement('article');
+                article.className = 'post-card';
+                article.innerHTML = `
+                    <div class="post-card-image" style="background-image: url('${post.image}')"></div>
+                    <div class="post-card-content">
+                        <h3>${post.title}</h3>
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author}</span>
+                        </div>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <div class="post-tags">${post.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+                        <a href="post-details.html?id=${post.id}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                blogList.appendChild(article);
+            });
+        }
+
+        function setupFilters() {
+            const searchInput = document.getElementById('search-input');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+                const filteredPosts = filterPosts(window.allPosts, searchTerm, activeCategory);
+                displayPosts(filteredPosts);
+            });
+
+            // Category filtering
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const activeCategory = this.dataset.category;
+                    const filteredPosts = filterPosts(window.allPosts, searchTerm, activeCategory);
+                    displayPosts(filteredPosts);
+                });
+            });
+        }
+
+        // --- DOM Elements ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const createPostBtn = document.getElementById('create-post-btn');
+        const logo = document.getElementById('siteLogo');
+
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+                logo.src = 'img/logo-2.png';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+                logo.src = 'img/logo.png';
+            }
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Mobile menu
+            mobileMenu.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+            });
+
+            // Create post modal (Now just redirects or alerts)
+            createPostBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Please log in to the Admin Dashboard to create new posts.');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadAndShowAllPosts();
+            setupEventListeners();
+
+            // Check for saved theme preference and set initial state
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                logo.src = 'img/logo-2.png';
+            } else {
+                logo.src = 'img/logo.png';
+            }
+        });
+    </script>
+</body>
+
+</html>
